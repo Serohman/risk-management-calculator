@@ -16,8 +16,9 @@ enum CalculatorRiskToggle {
 
 export default function Home() {
   const LOCAL_STORAGE_KEY = "risk-calculator/params";
-  const defaultFormRaw = localStorage.getItem(LOCAL_STORAGE_KEY);
-  const defaultForm = JSON.parse(defaultFormRaw || "{}");
+  const defaultFormRaw =
+    typeof window === "undefined" ? "{}" : window?.localStorage?.getItem(LOCAL_STORAGE_KEY) || "{}";
+  const defaultForm = JSON.parse(defaultFormRaw);
 
   const [portfolioSize, setPortfolioSize] = useState<number>(defaultForm.portfolioSize);
   const [riskPercent, setRiskPercent] = useState(defaultForm.riskPercent);
@@ -54,18 +55,20 @@ export default function Home() {
   };
 
   const saveFieldsLocally = (overwrite?: any) => {
-    localStorage.setItem(
-      LOCAL_STORAGE_KEY,
-      JSON.stringify({
-        portfolioSize,
-        riskPercent,
-        riskAmount,
-        slRisk,
-        riskRewardRatio,
-        riskToggle,
-        ...overwrite,
-      })
-    );
+    if (typeof window !== "undefined") {
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY,
+        JSON.stringify({
+          portfolioSize,
+          riskPercent,
+          riskAmount,
+          slRisk,
+          riskRewardRatio,
+          riskToggle,
+          ...overwrite,
+        })
+      );
+    }
   };
 
   const renderRiskToggle = () => {
