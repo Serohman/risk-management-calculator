@@ -107,6 +107,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen p-24">
+      <title>Position Calculator</title>
       {/* Configurable Parameters */}
       <div className="flex flex-col">
         <label className="mb-4 flex flex-col">
